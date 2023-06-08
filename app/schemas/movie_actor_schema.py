@@ -1,5 +1,3 @@
-from datetime import date
-
 from sqlmodel import Field, Relationship, SQLModel
 
 
@@ -7,17 +5,17 @@ class MovieInput(SQLModel):
     title: str
     length: int
     synopsis: str
-    release_year: int
+    release_date: str
     director: str
     genre: str
-    rating: int | None = None
+    tmdb_id: int
+    rating: float | None = None
 
 
 class MovieActorLink(SQLModel, table=True):
-    movie_id: int = Field(foreign_key="movie.id",
-                          primary_key=True, default=None)
-    actor_id: int = Field(foreign_key="actor.id",
-                          primary_key=True, default=None)
+    id: int | None = Field(default=None, primary_key=True)
+    movie_id: int = Field(foreign_key="movie.id", default=None)
+    actor_id: int = Field(foreign_key="actor.id", default=None)
 
 
 class Movie(MovieInput, table=True):
@@ -32,12 +30,11 @@ class MovieOutput(MovieInput):
 
 
 class ActorInput(SQLModel):
-    first_name: str
-    last_name: str
-    date_of_birth: date
-    nationality: str
-    biography: str | None = None
-    profile_picture_url: str | None = None
+    name: str
+    date_of_birth: str
+    tmdb_id: int
+    character: str
+    gender: int
 
 
 class Actor(ActorInput, table=True):

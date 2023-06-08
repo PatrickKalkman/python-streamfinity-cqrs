@@ -33,6 +33,8 @@ def create_db_if_not_exists() -> None:
     conn.close()
 
 
+
+
 @app.on_event("startup")
 def on_startup() -> None:
     create_db_if_not_exists()
