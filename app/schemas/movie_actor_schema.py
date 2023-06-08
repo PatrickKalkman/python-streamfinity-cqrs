@@ -1,3 +1,4 @@
+from typing import List
 from sqlmodel import Field, Relationship, SQLModel
 
 
@@ -41,3 +42,16 @@ class Actor(ActorInput, table=True):
     id: int | None = Field(primary_key=True, default=None)
     movies: list[Movie] = Relationship(back_populates="actors",
                                        link_model=MovieActorLink)
+
+
+class ActorBase(SQLModel):
+    id: int
+    name: str
+    date_of_birth: str
+    tmdb_id: int
+    character: str
+    gender: int
+
+
+class MovieOut(MovieInput, table=False):
+    actors: List[ActorBase]

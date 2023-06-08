@@ -1,28 +1,32 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, select
+from sqlalchemy.orm import joinedload,selectinload
 
 from app.db_session.db_engine import get_session
 from app.schemas.movie_actor_schema import (Actor, Movie, MovieActorLink,
-                                            MovieInput)
+                                            MovieInput, MovieOut)
 
 router = APIRouter(prefix="/api/movies")
 
 
 @router.get("/")
-def get_movies(release_year: int | None = None,
-               session: Session = Depends(get_session)) -> list[Movie]:
-    query = select(Movie)
-    if release_year:
-        query = query.where(Movie.release_year == release_year)
-    return session.exec(query).all()
+def get_movies(
+    skip: int = 0, limit: int = 100,
+    session: Session = Depends(get_session)
+) -> list[MovieOut]:
+    query = select(Movie).options(selectinload(Movie.actors))
+    query = query.order_by(Movie.id).offset(skip).limit(limit)
+    movies = session.exec(query).all()
+    return movies
 
 
 @router.get("/{movie_id}")
-def get_movie(movie_id: int,
-              session: Session = Depends(get_session)) -> Movie:
-    movie: Movie | None = session.get(Movie, movie_id)
+def get_movie(movie_id: int, session: Session = Depends(get_session)) -> MovieOut:
+    statement = select(Movie).where(Movie.id == movie_id).options(selectinload(Movie.actors))
+    movie: Movie | None = session.exec(statement).first()
+
     if movie:
-        return movie
+        return movie  # type: ignore
 
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                         detail=f"Movie with id={movie_id} not found")
