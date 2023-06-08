@@ -2,10 +2,13 @@ import os
 from typing import Any, Generator
 
 from sqlmodel import Session, create_engine
+import pyodbc
 
 is_testing = os.environ.get("TESTING")
 
-database_url = "mssql+pyodbc://sa:2023streamfinity@localhost/streamfinity"
+
+
+database_url = "mssql+pyodbc://sa:Password123@localhost/streamfinity?&driver=ODBC Driver 18 for SQL Server&Encrypt=no"
 
 engine = create_engine(
     database_url,
