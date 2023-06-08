@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  streamfinity-database:
+    container_name: streamfinity-database-container
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    volumes:
+      - ./db/data:/var/opt/mssql/data
+      - ./db/log:/var/opt/mssql/log
+      - ./db/secrets:/var/opt/mssql/secrets
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Password123
+      - MSSQL_PID=Developer
+    ports:
+      - 1433:1433
+    networks: 
+      - streamfinity-network
+  streamfinity-api:
+    container_name: streamfinity-api-container
+    image: python:3.11-slim-buster
+    environment:
+      - Test=Y
+    ports:
+      - 443:443
+    networks: 
+      - streamfinity-network
+networks:
+  streamfinity-network:
