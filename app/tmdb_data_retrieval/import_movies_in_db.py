@@ -25,6 +25,28 @@ def fill_db_with_data_if_empty():
         all_data = json.load(f)
 
     with Session(engine) as session:
+        # Collect all unique actors
+        all_actors = []
+        for movie_data in all_data:
+            for actor_data in movie_data['cast']:
+                if actor_data['known_for_department'] == 'Acting':
+                    if actor_data['id'] not in [actor.tmdb_id for actor in all_actors]:
+                        actor = Actor(
+                            name=actor_data['name'],
+                            date_of_birth='',
+                            tmdb_id=actor_data['id'],
+                            character=actor_data['character'],
+                            gender=actor_data['gender']
+                        )
+                        all_actors.append(actor)
+
+        # Bulk insert actors
+        session.bulk_save_objects(all_actors)
+        session.commit()
+
+        # Fetch all actors from the DB into a dictionary
+        actors_dict = {actor.tmdb_id: actor for actor in session.query(Actor)}
+
         # Loop over all movies
         for movie_data in all_data:
             genre_str = ','.join(str(genre_id) for genre_id in movie_data['genre_ids'])
@@ -46,27 +68,18 @@ def fill_db_with_data_if_empty():
             session.commit()
 
             # Loop over all actors in the movie
-            actors = []
             actor_links = []
             for actor_data in movie_data['cast']:
                 if actor_data['known_for_department'] == 'Acting':
-                    actor = Actor(
-                        name=actor_data['name'],
-                        date_of_birth='',
-                        tmdb_id=actor_data['id'],
-                        character=actor_data['character'],
-                        gender=actor_data['gender']
-                    )
-                    actors.append(actor)
+                    # Get actor from the dictionary
+                    actor = actors_dict[actor_data['id']]
 
                     # Add link between movie and actor
                     actor_link = MovieActorLink(movie_id=movie.id, actor_id=actor.id)
                     actor_links.append(actor_link)
 
-            # Bulk insert actors and movie-actor links
-            session.bulk_save_objects(actors)
+            # Bulk insert movie-actor links
             session.bulk_save_objects(actor_links)
-
             session.commit()
 
     # End timing

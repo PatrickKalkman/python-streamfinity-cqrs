@@ -2,6 +2,7 @@ from typing import Any, Generator
 
 from sqlmodel import Session, create_engine
 
+# TODO retrieve username, password from environment variables
 database_url = "mssql+pyodbc://sa:Password123@localhost/streamfinity?&driver=ODBC Driver 18 for SQL Server&Encrypt=no"
 
 engine = create_engine(

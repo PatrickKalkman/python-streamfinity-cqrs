@@ -1,0 +1,1 @@
+CREATE UNIQUE CLUSTERED INDEX IDX_MovieWithActors ON vMovieWithActors (movie_id, actor_id)
