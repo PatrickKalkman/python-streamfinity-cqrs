@@ -9,6 +9,8 @@ from loguru import logger
 
 import db_session.db_engine as db_engine
 from routers import actors, movies, subscriptions, token, users
+from app.tmdb_data_retrieval.import_movies_in_db import fill_db_with_data_if_empty
+
 
 app = FastAPI(title="Streamfinity API CQRS", version="0.1.0")
 app.include_router(movies.router)
@@ -33,12 +35,11 @@ def create_db_if_not_exists() -> None:
     conn.close()
 
 
-
-
 @app.on_event("startup")
 def on_startup() -> None:
     create_db_if_not_exists()
     SQLModel.metadata.create_all(db_engine.engine)
+    fill_db_with_data_if_empty()
 
 
 if __name__ == "__main__":
