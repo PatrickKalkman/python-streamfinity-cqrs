@@ -12,3 +12,4 @@ gunicorn == 20.1.0
 pyodbc == 4.0.32
 python-decouple == 3.8
 python-jose == 3.3.0
+python-dotenv == 1.0.0

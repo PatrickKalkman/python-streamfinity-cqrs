@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, select
-from sqlalchemy.orm import joinedload,selectinload
+from sqlalchemy.orm import selectinload
 
 from app.db_session.db_engine import get_session
 from app.schemas.movie_actor_schema import (Actor, Movie, MovieActorLink,

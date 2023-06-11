@@ -9,19 +9,10 @@ services:
       - ./db/secrets:/var/opt/mssql/secrets
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=Password123
+      - SA_PASSWORD=ULpxRKtTH5rqXivrLG77
       - MSSQL_PID=Developer
     ports:
       - 1433:1433
-    networks: 
-      - streamfinity-network
-  streamfinity-api:
-    container_name: streamfinity-api-container
-    image: python:3.11-slim-buster
-    environment:
-      - Test=Y
-    ports:
-      - 443:443
     networks: 
       - streamfinity-network
 networks:

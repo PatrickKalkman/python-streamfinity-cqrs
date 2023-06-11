@@ -75,6 +75,7 @@ def fill_db_with_data_if_empty():
                     actor = actors_dict[actor_data['id']]
 
                     # Add link between movie and actor
+                    assert (movie.id is not None)
                     actor_link = MovieActorLink(movie_id=movie.id, actor_id=actor.id)
                     actor_links.append(actor_link)
 

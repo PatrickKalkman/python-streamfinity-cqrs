@@ -17,7 +17,8 @@ headers = {
 }
 
 # Define the base API URL for action movies from 2022
-base_url = 'https://api.themoviedb.org/3/discover/movie?with_genres=28&primary_release_year=2022'
+base_url = ("https://api.themoviedb.org/3/discover/movie"
+            "?with_genres=28&primary_release_year=2022")
 
 # Start with the first page
 page_number = 1

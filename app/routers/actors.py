@@ -24,18 +24,18 @@ def get_actor(actor_id: int,
 
 @router.get("/")
 def get_actors(name: str | None = Query(None),
-               birthdate: date | None = Query(None),
-               nationality: str | None = Query(None),
+               birthdate: str | None = Query(None),
+               gender: int | None = Query(None),
                session: Session = Depends(get_session)) -> list[Actor]:
 
     query = select(Actor)
 
     if name:
-        query = query.where(Actor.last_name == name)
+        query = query.where(Actor.name == name)
     if birthdate:
         query = query.where(Actor.date_of_birth == birthdate)
-    if nationality:
-        query = query.where(Actor.nationality == nationality)
+    if gender:
+        query = query.where(Actor.gender == gender)
 
     return session.exec(query).all()
 

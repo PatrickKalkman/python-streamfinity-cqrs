@@ -28,7 +28,7 @@ for movie in all_movies:
     url = f'https://api.themoviedb.org/3/movie/{movie_id}/credits'
 
     # Make the request
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=headers, timeout=10)
 
     # Parse the JSON response
     data = response.json()
