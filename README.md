@@ -1,6 +1,6 @@
 # Streamfinity's Prototype
 
-A repository that contains the Streamfinity's prototype REST API that go with [a Medium article called Streamfinity's API Makeover - Embracing Python and FastAPI](https://medium.com/itnext/streamfinitys-api-makeover-embracing-python-and-fastapi-93df4dc237aa)
+A repository that contains the Streamfinity's prototype REST API that go with [How to Tackle Scalability With CQRS using Python and FastAPI](https://medium.com/@pkalkman)
 
 
 Here are the steps to install and run the prototype.
